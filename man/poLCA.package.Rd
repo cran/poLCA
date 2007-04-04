@@ -7,8 +7,8 @@
 \tabular{ll}{
 Package: \tab poLCA\cr
 Type: \tab Package\cr
-Version: \tab 0.9\cr
-Date: \tab 2006-06-01\cr
+Version: \tab 1.0\cr
+Date: \tab 2007-04-04\cr
 License: \tab GPL\cr
 }
 The function \code{\link{poLCA}} estimates the latent class model.

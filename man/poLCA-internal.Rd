@@ -7,6 +7,7 @@
 \alias{poLCA.vectorize}
 \alias{poLCA.unvectorize}
 \alias{poLCA.compress}
+\alias{poLCA.se}
 \title{Internal functions for poLCA}
 \description{Internal poLCA functions}
 \usage{
@@ -18,6 +19,7 @@ poLCA.dLL2dBeta.C(rgivy, prior, x)
 poLCA.vectorize(probs)
 poLCA.unvectorize(vp)
 poLCA.compress(y)
+poLCA.se(y,x,probs,prior,rgivy)
 }
 \arguments{
 \item{b}{vector of multinomial logit coefficients on covariates.}
@@ -38,6 +40,7 @@ poLCA.compress(y)
 \item{poLCA.vectorize}{Converts conditional response probabilties from list format \code{probs} to vector format \code{vp} for use in compiled C code.}
 \item{poLCA.unvectorize}{Converts conditional response probabilties from vector format \code{vp} to list format \code{probs} for use in R.}
 \item{poLCA.compress}{Compress a matrix or data frame by removing redundant rows, so that each unique row appears only once.  Also counts and returns the frequency of each row pattern.  The resulting matrix is sorted in ascending order, by column, starting with the first column.  Returns a list containing the "compressed" matrix \code{datamat}, in the same format (data frame or matrix) as what was inputted, along with the frequency count \code{freq} of each unique row in that matrix.}
+\item{poLCA.se}{Calculates covariance matrix and standard error estimates for all parameters, based upon the empirical observed information matrix.}
 }
 \details{
 Functions used in updating EM algorithm in main poLCA function, including calls to compiled C code to accelerate estimation.  

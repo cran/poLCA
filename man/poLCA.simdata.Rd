@@ -4,8 +4,8 @@
 \description{Uses the latent class model's assumed data-generating process to create a simulated dataset that can be used to test the properties of the poLCA latent class and latent class regression estimator.}
 \usage{
 poLCA.simdata(N = 5000, probs = NULL, nclass = 2, ndv = 4, 
-              nresp = NULL, niv = 0, b = NULL, classdist = NULL, 
-              missval = FALSE, pctmiss = NULL)
+              nresp = NULL, x = NULL, niv = 0, b = NULL, 
+              classdist = NULL, missval = FALSE, pctmiss = NULL)
 }
 \arguments{
 \item{N}{number of observations.}
@@ -13,9 +13,10 @@ poLCA.simdata(N = 5000, probs = NULL, nclass = 2, ndv = 4,
 \item{nclass}{number of latent classes. If\code{probs} is specified, then \code{nclass} is set equal to the number of rows in each matrix in that list. If \code{classdist} is specified, then \code{nclass} is set equal to the length of that vector. Otherwise, the default is two.}
 \item{ndv}{number of manifest variables.  If \code{probs} is specified, then \code{ndv} is set equal to the number of matrices in that list. If \code{nresp} is specified, then \code{ndv} is set equal to the length of that vector. Otherwise, the default is four.}
 \item{nresp}{number of possible outcomes for each manifest variable. If \code{probs} is specified, then \code{ndv} is set equal to the number of columns in each matrix in that list. If both \code{probs} and \code{nresp} are \code{NULL} (default), then the manifest variables are assigned a random number of outcomes between two and five.}
-\item{niv}{number of concomitant variables (covariates).  Setting \code{niv=0} (default) creates a data set assuming no covariates.  If \code{nclass=1} then \code{niv} is automatically set equal to 0. All covariates consist of random draws from a standard normal distribution and are mutually independent.}
+\item{x}{a matrix of concomicant variables with \code{N} rows and \code{niv} columns. If \code{niv>0} but \code{x=NULL}, then the concomitant variable(s) will be generated randomly.  If both \code{x} and \code{niv} are entered, then the number of columns in \code{x} overrides the value of \code{niv}.}
+\item{niv}{number of concomitant variables (covariates).  Setting \code{niv=0} (default) creates a data set assuming no covariates.  If \code{nclass=1} then \code{niv} is automatically set equal to 0. Unless \code{x} is specified, all covariates consist of random draws from a standard normal distribution and are mutually independent.}
 \item{b}{when using covariates, an \code{niv+1} by \code{nclass-1} matrix of (multinomial) logit coefficients. If \code{b} is \code{NULL} (default), then coefficients are generated as random integers between -2 and 2.}
-\item{classdist}{A vector of mixing proportions (class population shares) of length \code{nclass}. \code{classdist} must sum to 1.  Disregarded if \code{niv>1} because then \code{classdist} is, in part, a function of the concomitant variables.  If \code{classdist} is \code{NULL} (default), then the mixing proportions are generated randomly.}
+\item{classdist}{a vector of mixing proportions (class population shares) of length \code{nclass}. \code{classdist} must sum to 1.  Disregarded if \code{niv>1} because then \code{classdist} is, in part, a function of the concomitant variables.  If \code{classdist} is \code{NULL} (default), then the mixing proportions are generated randomly.}
 \item{missval}{logical. If \code{TRUE} then a fraction \code{pctmiss} of the manifest variables are randomly dropped as missing values.  Default is \code{FALSE}.}
 \item{pctmiss}{percentage of values to be dropped as missing, if \code{missval=TRUE}.  If \code{pctmiss} is \code{NULL} (default), then a value between 5 and 40 percent is chosen randomly.}
 }

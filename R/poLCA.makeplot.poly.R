@@ -1,4 +1,4 @@
-"poLCA.makeplot.poly" <-
+`poLCA.makeplot.poly` <-
 function(probs,r,y,K.j,ti) {
     pi.class <- matrix(NA,nrow=length(probs),ncol=max(K.j))
     for (j in 1:length(probs)) {

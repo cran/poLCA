@@ -1,4 +1,4 @@
-"poLCA.makeplot.dich" <-
+`poLCA.makeplot.dich` <-
 function(probs,P,y,ti) {
     R <- nrow(probs[[1]])
     pi.class <- matrix(NA,nrow=length(probs),ncol=R)

@@ -1,4 +1,4 @@
-"poLCA.compress" <-
+`poLCA.compress` <-
 function(y) {
     ym.sorted <- y[do.call(order,data.frame(y)),]
     vars <- ncol(ym.sorted)

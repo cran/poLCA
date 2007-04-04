@@ -1,4 +1,4 @@
-"poLCA.ylik.C" <-
+`poLCA.ylik.C` <-
 function(vp,y) {
     res <- .C("ylik",
                 as.double(vp$vecprobs),

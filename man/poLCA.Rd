@@ -4,16 +4,17 @@
 \description{Estimates latent class and latent class regression models for polytomous outcome variables.}
 \usage{
 poLCA(formula, data, nclass = 2, maxiter = 1000, graphs = FALSE, 
-      tol = 1e-10, na.rm = TRUE)
+      tol = 1e-10, na.rm = TRUE, probs.start = NULL)
 }
 \arguments{
-\item{formula}{a formula expression of the form \code{response ~ predictors}. The details of model specification are given below.}
-\item{data}{a data frame containing variables in \code{formula}. Manifest variables must contain \emph{only} integer values, and must be coded with consecutive values from 1 to the maximum number of outcomes for each variable. All missing values should be entered as \code{NA}.}
+\item{formula}{A formula expression of the form \code{response ~ predictors}. The details of model specification are given below.}
+\item{data}{A data frame containing variables in \code{formula}. Manifest variables must contain \emph{only} integer values, and must be coded with consecutive values from 1 to the maximum number of outcomes for each variable. All missing values should be entered as \code{NA}.}
 \item{nclass}{The number of latent classes to assume in the model. Setting \code{nclass=1} results in \code{poLCA} estimating the loglinear independence model. The default is two.}
 \item{maxiter}{The maximum number of iterations through which the estimation algorithm will cycle.}
 \item{graphs}{Logical, for whether \code{poLCA} should graphically display the parameter estimates at each stage of the updating algorithm. The default is \code{FALSE}.}
 \item{tol}{A tolerance value for judging when convergence has been reached.  When the one-iteration change in the estimated log-likelihood is less than \code{tol}, the estimation algorithm stops updating and considers the maximum log-likelihood to have been found.}
 \item{na.rm}{Logical, for how \code{poLCA} handles cases with missing values on the manifest variables.  If \code{TRUE}, those cases are removed (listwise deleted) before estimating the model. If \code{FALSE}, cases with missing values are retained. Cases with missing covariates are always removed. The default is \code{TRUE}.}
+\item{probs.start}{A list of matrices of class-conditional response probabilities to be used as the starting values for the estimation algorithm.  Each matrix in the list corresponds to one manifest variable, with one row for each latent class, and one column for each outcome.  The default is \code{NULL}, producing random starting values.}
 }
 \details{
 Latent class analysis, also known as latent structure analysis, is a technique for the analysis of clustering among observations in multi-way tables of qualitative/categorical variables.  The central idea is to fit a model in which any confounding between the manifest variables can be explained by a single unobserved "latent" categorical variable.  \code{poLCA} uses the assumption of local independence to estimate a mixture model of latent multi-way tables, the number of which (\code{nclass}) is specified by the user.  Estimated parameters include the class-conditional response probabilities for each manifest variable, the "mixing" proportions denoting population share of observations corresponding to each latent multi-way table, and coefficients on any class-predictor covariates, if specified in the model.
@@ -29,7 +30,9 @@ Model specification: Latent class models have more than one manifest variable, s
 \item{N}{number of cases used in model.}
 \item{Nobs}{number of fully observed cases (less than or equal to \code{N}).}
 \item{probs}{estimated class-conditional response probabilities.}
-\item{P}{sizes of each latent class; equal to the mixing proportions in the basic latent class model, or the mean of the posteriors in the latent class regression model.}
+\item{probs.se}{standard errors of estimated class-conditional response probabilities, in the same format as \code{probs}.}
+\item{P}{sizes of each latent class; equal to the mixing proportions in the basic latent class model, or the mean of the priors in the latent class regression model.}
+\item{P.se}{the standard errors of the estimated \code{P}.}
 \item{posterior}{matrix of posterior class membership probabilities.}
 \item{predclass}{vector of predicted class memberships, by modal assignment.}
 \item{predcell}{table of observed vs. predicted cell counts.}
@@ -37,6 +40,7 @@ Model specification: Latent class models have more than one manifest variable, s
 \item{numiter}{number of iterations until reaching convergence.}
 \item{coeff}{multinomial logit coefficient estimates on covariates (when estimated). \code{coeff} is a matrix with \code{nclass-1} columns, and one row for each covariate.  All logit coefficients are calculated for classes with respect to class 1.}
 \item{coeff.se}{standard errors of coefficient estimates on covariates (when estimated), in the same format as \code{coeff}.}
+\item{coeff.V}{covariance matrix of coefficient estimates on covariates (when estimated).}
 \item{aic}{Akaike Information Criterion.}
 \item{bic}{Bayesian Information Criterion.}
 \item{Gsq}{Likelihood ratio/deviance statistic.}
@@ -44,7 +48,8 @@ Model specification: Latent class models have more than one manifest variable, s
 \item{time}{length of time it took to run the model.}
 \item{npar}{number of degrees of freedom used by the model (estimated parameters).}
 \item{resid.df}{number of residual degrees of freedom.}
-\item{eflag}{logical: error flag. True if estimation algorithm needed to automatically restart with new initial parameters.}
+\item{eflag}{Logical, error flag. True if estimation algorithm needed to automatically restart with new initial parameters.}
+\item{probs.start}{A list of matrices containing the class-conditional response probabilities used as starting values in the estimation algorithm. If the algorithm needed to restart (see \code{eflag}), then this contains the starting values used for the final, successful, run.}
 }
 \references{
 Agresti, Alan. 2002. \emph{Categorical Data Analysis, second edition}. Hoboken: John Wiley \& Sons.
@@ -56,11 +61,13 @@ Hagenaars, Jacques A. and Allan L. McCutcheon, eds. 2002. \emph{Applied Latent C
 McLachlan, Geoffrey J. and Thriyambakam Krishnan. 1997. \emph{The EM Algorithm and Extensions}. New York: John Wiley \& Sons.
 }
 \note{
-\code{poLCA} uses EM and Newton-Raphson algorithms to maximize the latent class model log-likelihood function. Depending on the starting parameters, this algorithm may only locate a local, rather than global, maximum. This becomes more and more of a problem as \code{nclass} increases. It is therefore highly advisable to run \code{poLCA} multiple times until you are certain you have located the global maximum log-likelihood. Each function call will use different random initial starting parameters.
+\code{poLCA} uses EM and Newton-Raphson algorithms to maximize the latent class model log-likelihood function. Depending on the starting parameters, this algorithm may only locate a local, rather than global, maximum. This becomes more and more of a problem as \code{nclass} increases. It is therefore highly advisable to run \code{poLCA} multiple times until you are certain you have located the global maximum log-likelihood. As long as \code{probs.start=NULL}, each function call will use different random initial starting parameters.
 
 The term "Latent class regression" (LCR) can have two meanings.  In this package, LCR models refer to latent class models in which the probability of class membership is predicted by one or more covariates.  However, in other contexts, LCR is also used to refer to regression models in which the manifest variable is partitioned into some specified number of latent classes as part of estimating the regression model. It is a way to simultaneously fit more than one regression to the data when the latent data partition is unknown. The \code{\link[fpc:regmix]{regmix}} function in package \pkg{fpc} will estimate this other type of LCR model.  Because of these terminology issues, the LCR models this package estimates are sometimes termed "latent class models with covariates" or "concomitant-variable latent class analysis," both of which are accurate descriptions of this model.
  
 Latent class models are closely related to loglinear models; see package \pkg{gllm}.
+
+A more detailed user's manual is available online at \url{http://dlinzer.bol.ucla.edu/poLCA}.
 }
 \seealso{\code{\link{poLCA.simdata}}, \code{\link[e1071:lca]{lca}}, \code{\link[fpc:regmix]{regmix}}, \code{\link[gllm:gllm]{gllm}}}
 \examples{

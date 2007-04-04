@@ -1,4 +1,4 @@
-"rmulti" <-
+`rmulti` <-
 function(p) {
     if (is.vector(p)) p <- t(p)
     n <- nrow(p)

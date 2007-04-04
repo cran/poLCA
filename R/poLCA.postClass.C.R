@@ -1,4 +1,4 @@
-"poLCA.postClass.C" <-
+`poLCA.postClass.C` <-
 function(prior,vp,y) {
     res <- .C("postclass",
                 as.double(t(prior)),
