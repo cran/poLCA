@@ -34,7 +34,7 @@ void ylik(double *probs, int *y, int *obs, int *items,
 
 	for (i=0;i<cobs;i++) {
 		for (j=0;j<cclasses;j++) lik[j]=1.0;
-		probs = firstprobs;
+		probs = (double *) firstprobs;
 		for (k=0;k<citems;k++) {
 			for (j=0;j<cclasses;j++) {
 				if (y[k]>0) lik[j] *= probs[y[k]-1];
@@ -73,13 +73,13 @@ void postclass(double *prior, double *probs, int *y,
 	const int citems = *items;
 	const int cobs = *obs;
 	const int cclasses = *classes;
-	const int one = 1;
+	int one = 1;
 
 	totalChoices=0;
 	for (i=0;i<citems;i++) totalChoices += numChoices[i];
 
 	for (i=0;i<cobs;i++) {
-		ylik(probs,y,&one,items,numChoices,classes,llik);
+		ylik(probs,y, (int *) &one,items,numChoices,classes,llik);
 		denom = 0.0;
 		for (j=0;j<cclasses;j++) denom+=prior[j]*llik[j];
 		for (j=0;j<cclasses;j++) {

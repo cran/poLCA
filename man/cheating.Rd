@@ -34,7 +34,7 @@ f2 <- cbind(LIEEXAM,LIEPAPER,FRAUD,COPYEXAM)~GPA
 ch2c <- poLCA(f2,cheating,nclass=2)	# log-likelihood: -429.6384 
 GPAmat <- cbind(1,c(1:5))
 exb <- exp(GPAmat \%*\% ch2c$coeff)
-matplot(c(1:5),cbind(1/(1+exb),exb/(1+exb)),type="l",
+matplot(c(1:5),cbind(1/(1+exb),exb/(1+exb)),type="l",lwd=2,
 	main="GPA as a predictor of persistent cheating",
 	xlab="GPA category, low to high",
 	ylab="Probability of latent class membership")

@@ -1,6 +1,5 @@
 `poLCA.se` <-
 function(y,x,probs,prior,rgivy) {
-    fail <- F
     J <- ncol(y)
     R <- ncol(prior)
     K.j <- sapply(probs,ncol)
@@ -44,44 +43,40 @@ function(y,x,probs,prior,rgivy) {
     }
     VCE.probs <- Jac %*% VCE.lo %*% t(Jac)
     
-    if (sum(diag(VCE.probs)<0)==0) {    # Error trap degenerate cases
-        se.probs.vec <- sqrt(diag(VCE.probs))
-        se.probs <- list()
-        for (j in 1:J) { se.probs[[j]] <- matrix(0,0,K.j[j]) }
-        pos <- 1
-        for (r in 1:R) {
-            for (j in 1:J) { 
-                se.probs[[j]] <- rbind(se.probs[[j]],se.probs.vec[pos:(pos+K.j[j]-1)])
-                pos <- pos+K.j[j]
-            }
+    maindiag <- diag(VCE.probs)
+    maindiag[maindiag<0] <- 0 # error trap
+    se.probs.vec <- sqrt(maindiag)
+    se.probs <- list()
+    for (j in 1:J) { se.probs[[j]] <- matrix(0,0,K.j[j]) }
+    pos <- 1
+    for (r in 1:R) {
+        for (j in 1:J) { 
+            se.probs[[j]] <- rbind(se.probs[[j]],se.probs.vec[pos:(pos+K.j[j]-1)])
+            pos <- pos+K.j[j]
         }
-    
-        # Variance of mixing proportions (priors) and coefficients (betas)
-        if (R>1) {
-            VCE.beta <- VCE[(1+sum(R*(K.j-1))):dim(VCE)[1],(1+sum(R*(K.j-1))):dim(VCE)[2]]
-            se.beta <- matrix(sqrt(diag(VCE.beta)),nrow=ncol(x),ncol=(R-1))
-        
-            ptp <- array(NA,dim=c(R,R,N))
-            for (n in 1:N) {
-                ptp[,,n] <- -(prior[n,] %*% t(prior[n,]))
-                diag(ptp[,,n]) <- prior[n,] * (1-prior[n,])
-            }
-            Jac.mix <- NULL
-            for (r in 2:R) {
-                for (l in 1:ncol(x)) {
-                    Jac.mix <- cbind(Jac.mix,colMeans(t(ptp[,r,]) * x[,l]))
-                }
-            }
-            VCE.mix <- Jac.mix %*% VCE.beta %*% t(Jac.mix)
-            se.mix <- sqrt(diag(VCE.mix))
-        } else {
-            VCE.beta <- se.beta <- se.mix <- NULL
-        }
-    } else {
-        fail <- T
-        se.probs <- se.mix <- se.beta <- VCE.beta <- NULL
     }
 
-    return( list(probs=se.probs,P=se.mix,b=se.beta,var.b=VCE.beta,fail=fail) )
+    # Variance of mixing proportions (priors) and coefficients (betas)
+    if (R>1) {
+        VCE.beta <- VCE[(1+sum(R*(K.j-1))):dim(VCE)[1],(1+sum(R*(K.j-1))):dim(VCE)[2]]
+        se.beta <- matrix(sqrt(diag(VCE.beta)),nrow=ncol(x),ncol=(R-1))
+    
+        ptp <- array(NA,dim=c(R,R,N))
+        for (n in 1:N) {
+            ptp[,,n] <- -(prior[n,] %*% t(prior[n,]))
+            diag(ptp[,,n]) <- prior[n,] * (1-prior[n,])
+        }
+        Jac.mix <- NULL
+        for (r in 2:R) {
+            for (l in 1:ncol(x)) {
+                Jac.mix <- cbind(Jac.mix,colMeans(t(ptp[,r,]) * x[,l]))
+            }
+        }
+        VCE.mix <- Jac.mix %*% VCE.beta %*% t(Jac.mix)
+        se.mix <- sqrt(diag(VCE.mix))
+    } else {
+        VCE.beta <- se.beta <- se.mix <- NULL
+    }
+    return( list(probs=se.probs,P=se.mix,b=se.beta,var.b=VCE.beta) )
 }
 
