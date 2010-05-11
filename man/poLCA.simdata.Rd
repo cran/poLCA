@@ -41,7 +41,7 @@ probs <- list(matrix(c(0.6,0.1,0.3,     0.6,0.3,0.1,     0.3,0.1,0.6    ),ncol=3
               matrix(c(0.3,0.6,0.1,     0.1,0.3,0.6,     0.3,0.6,0.1    ),ncol=3,byrow=TRUE), # conditional resp prob to Y3
               matrix(c(0.1,0.1,0.5,0.3, 0.5,0.3,0.1,0.1, 0.3,0.1,0.1,0.5),ncol=4,byrow=TRUE), # conditional resp prob to Y4
               matrix(c(0.1,0.1,0.8,     0.1,0.8,0.1,     0.8,0.1,0.1    ),ncol=3,byrow=TRUE)) # conditional resp prob to Y5
-simdat <- poLCA.simdata(N=10000,probs,classdist=c(0.2,0.3,0.5))
+simdat <- poLCA.simdata(N=5000,probs,classdist=c(0.2,0.3,0.5))
 f1 <- cbind(Y1,Y2,Y3,Y4,Y5)~1
 lc1 <- poLCA(f1,simdat$dat,nclass=3)
 print(table(lc1$predclass,simdat$trueclass))
@@ -65,7 +65,7 @@ print(table(lc2a$predclass,lc2b$predclass))
 ## Then plot the estimated class-conditional outcome response 
 ## probabilities against each other for the two methods.
 ##
-simdat3 <- poLCA.simdata(N=8000,niv=2,ndv=5,nclass=3,b=matrix(c(-1,2,-3,1,-2,2),3,2),missval=TRUE,pctmiss=0.2)
+simdat3 <- poLCA.simdata(N=5000,niv=2,ndv=5,nclass=3,b=matrix(c(-1,2,-3,1,-2,2),3,2),missval=TRUE,pctmiss=0.2)
 f3 <- cbind(Y1,Y2,Y3,Y4,Y5)~X1+X2
 lc3.miss <- poLCA(f3,simdat3$dat,nclass=3,verbose=FALSE)
 probs.start.new <- poLCA.reorder(lc3.miss$probs.start,order(lc3.miss$P))

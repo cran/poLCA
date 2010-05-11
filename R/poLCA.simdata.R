@@ -1,4 +1,4 @@
-`poLCA.simdata` <-
+poLCA.simdata <-
 function(N=5000,probs=NULL,nclass=2,ndv=4,nresp=NULL,x=NULL,niv=0,b=NULL,classdist=NULL,missval=FALSE,pctmiss=NULL) {
     if (is.null(probs)) {
         if (is.null(nresp)) { nresp <- ceiling(runif(ndv,min=1,max=5)) }

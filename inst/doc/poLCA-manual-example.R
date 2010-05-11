@@ -9,7 +9,7 @@
 ## Department of Political Science
 ## jblewis@polisci.ucla.edu
 ##
-## October 26, 2007
+## May 11, 2010
 ##
 ## poLCA: Polytomous variable Latent Class Analysis
 ##
@@ -20,8 +20,20 @@
 
 library(poLCA)
 
+#########################################################################
+## Section 5.4. Predicted cell frequencies from the latent class model ##
+#########################################################################
+
+data(gss82)
+f <- cbind(PURPOSE,ACCURACY,UNDERSTA,COOPERAT)~1
+gss.lc2 <- poLCA(f,gss82,nclass=2)
+gss.lc2$predcell
+poLCA.table(formula=COOPERAT~1,condition=list(PURPOSE=3,ACCURACY=1,UNDERSTA=2),lc=gss.lc2)
+poLCA.table(formula=COOPERAT~UNDERSTA,condition=list(PURPOSE=3,ACCURACY=1),lc=gss.lc2)
+
+
 ########################################################
-## Section 5.5. Recognizing and avoiding local maxima ##
+## Section 5.6. Recognizing and avoiding local maxima ##
 ########################################################
 
 data(gss82)

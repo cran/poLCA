@@ -1,2 +1,2 @@
 useDynLib(poLCA)
-export(poLCA, print.poLCA, poLCA.simdata, poLCA.makeplot.dich, poLCA.makeplot.poly, poLCA.reorder, rmulti)
+export(poLCA, print.poLCA, poLCA.simdata, poLCA.makeplot.dich, poLCA.makeplot.poly, poLCA.reorder, poLCA.table, rmulti)

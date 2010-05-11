@@ -1,6 +1,14 @@
-`poLCA` <-
+poLCA <-
 function(formula,data,nclass=2,maxiter=1000,graphs=FALSE,tol=1e-10,na.rm=TRUE,probs.start=NULL,nrep=1,verbose=TRUE) {
     starttime <- Sys.time()
+    mf <- model.response(model.frame(formula,data,na.action=NULL))
+    if (any(mf<1,na.rm=TRUE) | any(round(mf) != mf,na.rm=T)) {
+        cat("\n ALERT: some manifest variables contain values that are not 
+  positive integers.  For poLCA to run, please recode categorical  
+  outcome variables to increment from 1 to the maximum number of 
+  outcome categories for each variable. \n \n")
+        ret <- NULL
+    } else {
     if (!na.rm) {
         mframe <- model.frame(formula,data,na.action=NULL)
         y <- model.response(mframe)
@@ -21,7 +29,10 @@ function(formula,data,nclass=2,maxiter=1000,graphs=FALSE,tol=1e-10,na.rm=TRUE,pr
     ret <- list()
     if (R==1) {
         ret$probs <- list()
-        for (j in 1:J) { ret$probs[[j]] <- matrix(table(y[,j])/sum(table(y[,j])),nrow=1) }
+        for (j in 1:J) {
+            ret$probs[[j]] <- matrix(NA,nrow=1,ncol=K.j[j])
+            for (k in 1:K.j[j]) { ret$probs[[j]][k] <- sum(y[,j]==k)/sum(y[,j]>0) }
+        }
         ret$probs.start <- ret$probs
         ret$P <- 1
         ret$posterior <- ret$predclass <- prior <- matrix(1,nrow=N,ncol=1)
@@ -175,6 +186,7 @@ function(formula,data,nclass=2,maxiter=1000,graphs=FALSE,tol=1e-10,na.rm=TRUE,pr
     class(ret) <- "poLCA"
     if (verbose) print.poLCA(ret)
     ret$time <- Sys.time()-starttime   # how long it took to run the model
+    }
     return(ret)
 }
 

@@ -1,4 +1,4 @@
-`poLCA.probHat.C` <-
+poLCA.probHat.C <-
 function(rgivy,y,vp) {
     ret <-  .C("probhat",
                 as.integer(t(y)),

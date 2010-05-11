@@ -1,4 +1,4 @@
-`poLCA.unvectorize` <-
+poLCA.unvectorize <-
 function(vp) {
     probs <- list()
     idx <- c(0,cumsum(vp$numChoices*vp$classes))

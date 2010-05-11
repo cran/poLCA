@@ -70,11 +70,11 @@ McLachlan, Geoffrey J. and Thriyambakam Krishnan. 1997. \emph{The EM Algorithm a
 \note{
 \code{poLCA} uses EM and Newton-Raphson algorithms to maximize the latent class model log-likelihood function. Depending on the starting parameters, this algorithm may only locate a local, rather than global, maximum. This becomes more and more of a problem as \code{nclass} increases. It is therefore highly advisable to run \code{poLCA} multiple times until you are relatively certain that you have located the global maximum log-likelihood. As long as \code{probs.start=NULL}, each function call will use different (random) initial starting parameters.  Alternately, setting \code{nrep} to a value greater than one enables the user to estimate the latent class model multiple times with a single call to \code{poLCA}, thus conducting the search for the global maximizer automatically.
 
-The term "Latent class regression" (LCR) can have two meanings.  In this package, LCR models refer to latent class models in which the probability of class membership is predicted by one or more covariates.  However, in other contexts, LCR is also used to refer to regression models in which the manifest variable is partitioned into some specified number of latent classes as part of estimating the regression model. It is a way to simultaneously fit more than one regression to the data when the latent data partition is unknown. The \code{\link[fpc:regmix]{regmix}} function in package \pkg{fpc} will estimate this other type of LCR model.  Because of these terminology issues, the LCR models this package estimates are sometimes termed "latent class models with covariates" or "concomitant-variable latent class analysis," both of which are accurate descriptions of this model.
+The term "Latent class regression" (LCR) can have two meanings.  In this package, LCR models refer to latent class models in which the probability of class membership is predicted by one or more covariates.  However, in other contexts, LCR is also used to refer to regression models in which the manifest variable is partitioned into some specified number of latent classes as part of estimating the regression model. It is a way to simultaneously fit more than one regression to the data when the latent data partition is unknown. The \code{\link[flexmix:flexmix]{flexmix}} function in package \pkg{flexmix} will estimate this other type of LCR model.  Because of these terminology issues, the LCR models this package estimates are sometimes termed "latent class models with covariates" or "concomitant-variable latent class analysis," both of which are accurate descriptions of this model.
  
 A more detailed user's manual is available online at \url{http://userwww.service.emory.edu/~dlinzer/poLCA}.
 }
-\seealso{\code{\link{poLCA.simdata}}, \code{\link[e1071:lca]{lca}}, \code{\link[fpc:regmix]{regmix}}, \code{\link[gllm:gllm]{gllm}}}
+\seealso{\code{\link{poLCA.simdata}}, \code{\link{poLCA.table}} }
 \examples{
 ##
 ## Three models without covariates:
@@ -110,7 +110,7 @@ text(1.8,0.6,"Gore affinity")
 ## Then plot the estimated class-conditional outcome response 
 ## probabilities against each other for the two methods.
 ##
-simdat3 <- poLCA.simdata(N=8000,niv=2,ndv=5,nclass=3,b=matrix(c(-1,2,-3,1,-2,2),3,2),missval=TRUE,pctmiss=0.2)
+simdat3 <- poLCA.simdata(N=2500,niv=2,ndv=5,nclass=3,b=matrix(c(-1,2,-3,1,-2,2),3,2),missval=TRUE,pctmiss=0.2)
 f3 <- cbind(Y1,Y2,Y3,Y4,Y5)~X1+X2
 lc3.miss <- poLCA(f3,simdat3$dat,nclass=3,verbose=FALSE)
 probs.start.new <- poLCA.reorder(lc3.miss$probs.start,order(lc3.miss$P))

@@ -1,4 +1,4 @@
-`print.poLCA` <-
+print.poLCA <-
 function(x, ...) {
     R <- length(x$P)
     S <- ifelse(is.null(x$coeff),1,nrow(x$coeff))

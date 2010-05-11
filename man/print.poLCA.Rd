@@ -9,7 +9,7 @@ print.poLCA(x, ...)
 }
 \arguments{
   \item{x}{An object of class poLCA.}
-  \item{...}{}
+  \item{...}{additional arguments.}
 }
 \seealso{ \code{\link{poLCA}} }
 \examples{

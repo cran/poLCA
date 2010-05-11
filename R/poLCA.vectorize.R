@@ -1,4 +1,4 @@
-`poLCA.vectorize` <-
+poLCA.vectorize <-
 function(probs) {
     classes <- nrow(probs[[1]])
     vecprobs <- unlist(lapply(probs,t))

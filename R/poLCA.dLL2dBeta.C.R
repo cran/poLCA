@@ -1,4 +1,4 @@
-`poLCA.dLL2dBeta.C` <-
+poLCA.dLL2dBeta.C <-
 function(rgivy,prior,x) {
     classes <- dim(prior)[2]
     numx <- dim(x)[2]

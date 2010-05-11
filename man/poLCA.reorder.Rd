@@ -14,15 +14,6 @@ poLCA.reorder(probs, o.new)
 \seealso{\code{\link{poLCA}}}
 \examples{
 ##
-## Create sample data and arrange latent classes in order of increasing size.
-##
-sim <- poLCA.simdata(N=5000,nclass=3,ndv=5,classdist=c(0.15,0.30,0.55))
-f <- cbind(Y1,Y2,Y3,Y4,Y5)~1
-lc <- poLCA(f,sim$dat,nclass=3)
-probs.start.new <- poLCA.reorder(lc$probs.start,order(lc$P))
-lc2 <- poLCA(f,sim$dat,nclass=3,probs.start=probs.start.new)
-
-##
 ## Using the "cheating" sample data set, make the larger
 ## non-cheater class the first ("reference") class in a 
 ## latent class regression model.  The coefficient on GPA
