@@ -9,7 +9,7 @@
 ## Department of Political Science
 ## jblewis@polisci.ucla.edu
 ##
-## May 11, 2010
+## April 4, 2011
 ##
 ## poLCA: Polytomous variable Latent Class Analysis
 ##
@@ -33,7 +33,7 @@ poLCA.table(formula=COOPERAT~UNDERSTA,condition=list(PURPOSE=3,ACCURACY=1),lc=gs
 
 
 ########################################################
-## Section 5.6. Recognizing and avoiding local maxima ##
+## Section 5.7. Recognizing and avoiding local maxima ##
 ########################################################
 
 data(gss82)

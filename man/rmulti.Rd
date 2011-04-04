@@ -19,7 +19,7 @@ rmulti(p1)
 n <- 10000
 p2 <- matrix(p1,nrow=n,ncol=length(p1),byrow=TRUE)
 rmdraws <- rmulti(p2)
-table(rmdraws)/n	# should be approximately 0.7, 0.2, 0.1
+table(rmdraws)/n    # should be approximately 0.7, 0.2, 0.1
 
 ##
 ## 10,000 draws from a mixture of three groups of a
@@ -33,7 +33,7 @@ p3[,group==2] <- c(0.1,0.7,0.1,0.1)
 p3[,group==3] <- c(0.1,0.1,0.1,0.7)
 p3 <- t(p3)
 rmdraws3 <- rmulti(p3)
-print(table(group,rmdraws3))
-print(table(group,rmdraws3)/rowSums(table(group,rmdraws3)))
+table(group,rmdraws3)
+table(group,rmdraws3)/rowSums(table(group,rmdraws3))
 }  
 \keyword{methods}

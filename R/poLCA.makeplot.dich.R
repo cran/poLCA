@@ -5,7 +5,7 @@ function(probs,P,y,ti) {
     for (j in 1:length(probs)) {
         pi.class[j,] <- probs[[j]][,2]
     }
-    dimnames(pi.class) <- list(names(y),100*round(P,4))
+    dimnames(pi.class) <- list(names(y),round(P,4))
     ds.plot <- data.frame(Classes=as.vector(col(pi.class)),Manifest.variables=as.vector(row(pi.class)),value=as.vector(pi.class))
     vis <- scatterplot3d(ds.plot,type="h",lwd=5,pch=" ",x.ticklabs=colnames(pi.class),y.ticklabs=colnames(y),z.ticklabs=" ",
             xlab="Classes; population share",ylab="Manifest variables",zlab="pr(outcome)",color=2,main=ti,y.margin.add=0.2,

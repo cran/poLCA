@@ -13,8 +13,8 @@
 ##
 data(carcinoma)
 f <- cbind(A,B,C,D,E,F,G)~1
-lca2 <- poLCA(f,carcinoma,nclass=2)	# log-likelihood: -317.2568
-lca3 <- poLCA(f,carcinoma,nclass=3)	# log-likelihood: -293.705
-lca4 <- poLCA(f,carcinoma,nclass=4,nrep=10,maxiter=5000)	# log-likelihood: -289.2858 
+lca2 <- poLCA(f,carcinoma,nclass=2) # log-likelihood: -317.2568
+lca3 <- poLCA(f,carcinoma,nclass=3) # log-likelihood: -293.705
+lca4 <- poLCA(f,carcinoma,nclass=4,nrep=10,maxiter=5000) # log-likelihood: -289.2858 
 }
 \keyword{datasets}

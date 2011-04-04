@@ -19,8 +19,8 @@ Goodman, Leo A. 2002. "Latent Class Analysis; The Empirical Study of Latent Type
 ##
 data(values)
 f <- cbind(A,B,C,D)~1
-M0 <- poLCA(f,values,nclass=1)			# log-likelihood: -543.6498
-M1 <- poLCA(f,values,nclass=2)			# log-likelihood: -504.4677
-M2 <- poLCA(f,values,nclass=3,maxiter=8000)	# log-likelihood: -503.3011
+M0 <- poLCA(f,values,nclass=1) # log-likelihood: -543.6498
+M1 <- poLCA(f,values,nclass=2) # log-likelihood: -504.4677
+M2 <- poLCA(f,values,nclass=3,maxiter=8000) # log-likelihood: -503.3011
 }
 \keyword{datasets}

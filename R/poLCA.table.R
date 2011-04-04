@@ -4,16 +4,16 @@ function(formula,condition,lc) {
     y <- lc$y
     mf <- model.frame(formula,y)
     ret <- NULL
-    trap <- F
+    trap <- FALSE
     if (any(condition<=0) | any(condition>apply(y[names(condition)],2,max,na.rm=T))) {
         cat("Error: Some 'condition' values are not observed in data set. \n")
-        trap <- T
+        trap <- TRUE
     } else if (any(table(c(names(condition),names(mf)))>1)) {
         cat("Error: Variables can only be specified once in 'formula' or 'condition'. \n")
-        trap <- T
+        trap <- TRUE
     } else if (ncol(mf)>2) {
         cat("Error: 'formula' must be of form 'y~1' or 'y~x'. \n")
-        trap <- T
+        trap <- TRUE
     }
     if (!trap) {
         grp <- F
@@ -23,8 +23,8 @@ function(formula,condition,lc) {
                 sel[[j]] <- c(1:max(mf[,which(names(mf) == names(y)[j])]))
             } else {
                 if (sum(names(condition) == names(y)[j])==0) {
-                    sel[[j]] <- c(1:max(y[,j]))
-                    grp <- T
+                    sel[[j]] <- c(1:max(y[,j],na.rm=T))
+                    grp <- TRUE
                 } else {
                     sel[[j]] <- condition[[which(names(condition) == names(y)[j])]]
                 }
@@ -63,7 +63,9 @@ function(formula,condition,lc) {
             rownames(ret) <- ""
             colnames(ret) <- paste(names(mf)[1],c(1:max(mf)))
         }
+        return(ret)
+    } else {
+        invisible(NULL)
     }
-    return(ret)
 }
 

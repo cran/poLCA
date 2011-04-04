@@ -1,8 +1,9 @@
 poLCA <-
-function(formula,data,nclass=2,maxiter=1000,graphs=FALSE,tol=1e-10,na.rm=TRUE,probs.start=NULL,nrep=1,verbose=TRUE) {
+function(formula,data,nclass=2,maxiter=1000,graphs=FALSE,tol=1e-10,
+                na.rm=TRUE,probs.start=NULL,nrep=1,verbose=TRUE,calc.se=TRUE) {
     starttime <- Sys.time()
     mf <- model.response(model.frame(formula,data,na.action=NULL))
-    if (any(mf<1,na.rm=TRUE) | any(round(mf) != mf,na.rm=T)) {
+    if (any(mf<1,na.rm=TRUE) | any(round(mf) != mf,na.rm=TRUE)) {
         cat("\n ALERT: some manifest variables contain values that are not 
   positive integers.  For poLCA to run, please recode categorical  
   outcome variables to increment from 1 to the maximum number of 
@@ -18,12 +19,18 @@ function(formula,data,nclass=2,maxiter=1000,graphs=FALSE,tol=1e-10,na.rm=TRUE,pr
     }
     mframe <- model.frame(formula,data)
     y <- model.response(mframe)
+    if (any(sapply(lapply(as.data.frame(y),table),length)==1)) {
+        y <- y[,!(sapply(apply(y,2,table),length)==1)]
+        cat("\n ALERT: at least one manifest variable contained only one
+  outcome category, and has been removed from the analysis. \n \n")
+    }
     x <- model.matrix(formula,mframe)
     N <- nrow(y)
     J <- ncol(y)
     K.j <- t(matrix(apply(y,2,max)))
     R <- nclass
     S <- ncol(x)
+    if (S>1) { calc.se <- TRUE }
     eflag <- FALSE
     probs.start.ok <- TRUE
     ret <- list()
@@ -37,23 +44,25 @@ function(formula,data,nclass=2,maxiter=1000,graphs=FALSE,tol=1e-10,na.rm=TRUE,pr
         ret$P <- 1
         ret$posterior <- ret$predclass <- prior <- matrix(1,nrow=N,ncol=1)
         ret$llik <- sum(log(poLCA.ylik.C(poLCA.vectorize(ret$probs),y)))
-        se <- poLCA.se(y,x,ret$probs,prior,ret$posterior)
-        ret$probs.se <- se$probs           # standard errors of class-conditional response probabilities
-        ret$P.se <- se$P                   # standard errors of class population shares
+        if (calc.se) {
+            se <- poLCA.se(y,x,ret$probs,prior,ret$posterior)
+            ret$probs.se <- se$probs           # standard errors of class-conditional response probabilities
+            ret$P.se <- se$P                   # standard errors of class population shares
+        } else {
+            ret$probs.se <- NA
+            ret$P.se <- NA
+        }
         ret$numiter <- 1
         ret$probs.start.ok <- TRUE
-        ret$coeff <- NULL
-        ret$coeff.se <- NULL
-        ret$coeff.V <- NULL
+        ret$coeff <- NA
+        ret$coeff.se <- NA
+        ret$coeff.V <- NA
         ret$eflag <- FALSE
         if (S>1) {
             cat("\n ALERT: covariates not allowed when nclass=1; will be ignored. \n \n")
             S <- 1
         }
     } else {
-        if (graphs) ifelse(max(K.j)==2,
-                            layout(matrix(c(1,2),2,1),heights=c(8,1)),
-                            layout(matrix(seq(1,(R+1)),R+1,1),heights=c(rep(5,R),1)))
         if (!is.null(probs.start)) { # error checking on user-inputted probs.start
             if ((length(probs.start) != J) | (!is.list(probs.start))) {
                 probs.start.ok <- FALSE
@@ -103,19 +112,13 @@ function(formula,data,nclass=2,maxiter=1000,graphs=FALSE,tol=1e-10,na.rm=TRUE,pr
                     } else if ((S>1) & (dll < -1e-7)) {
                         error <- TRUE
                     }
-                    if (graphs) {
-                        if (max(K.j)==2) {
-                            poLCA.makeplot.dich(poLCA.unvectorize(vp),colMeans(rgivy),y,NULL)
-                        } else {
-                            for (r in 1:R) { poLCA.makeplot.poly(poLCA.unvectorize(vp),r,y,K.j,paste("Class",r,": p=",round(colMeans(rgivy)[r],3))) }
-                        }
-                        par(mar=c(0,0,0,0))
-                        plot(0,main=paste("\n iteration",iter,": log-lik =",llik[iter]),cex.main=1.5,
-                             col="white",col.axis="white",col.lab="white",xaxt="n",yaxt="n",bty="n")
-                    }
                 }
                 if (!error) { 
-                    se <- poLCA.se(y,x,poLCA.unvectorize(vp),prior,rgivy)
+                    if (calc.se) {
+                        se <- poLCA.se(y,x,poLCA.unvectorize(vp),prior,rgivy)
+                    } else {
+                        se <- list(probs=NA,P=NA,b=NA,var.b=NA)
+                    }
                 } else {
                     eflag <- TRUE
                 }
@@ -141,16 +144,17 @@ function(formula,data,nclass=2,maxiter=1000,graphs=FALSE,tol=1e-10,na.rm=TRUE,pr
                     ret$coeff.se <- se$b           # standard errors of coefficient estimates (when estimated)
                     ret$coeff.V <- se$var.b        # covariance matrix of coefficient estimates (when estimated)
                 } else {
-                    ret$coeff <- NULL
-                    ret$coeff.se <- NULL
-                    ret$coeff.V <- NULL
+                    ret$coeff <- NA
+                    ret$coeff.se <- NA
+                    ret$coeff.V <- NA
                 }
                 ret$eflag <- eflag                 # error flag, true if estimation algorithm ever needed to restart with new initial values
             }
-            if (nrep>1) { cat("Model ",repl,": llik = ",llik[iter]," ... best llik = ",ret$llik,"\n",sep=""); flush.console() }
+            if (nrep>1 & verbose) { cat("Model ",repl,": llik = ",llik[iter]," ... best llik = ",ret$llik,"\n",sep=""); flush.console() }
         } # end replication loop
     }
-    names(ret$probs) <- names(ret$probs.se) <- colnames(y)
+    names(ret$probs) <- colnames(y)
+    if (calc.se) { names(ret$probs.se) <- colnames(y) }
     ret$npar <- (R*sum(K.j-1)) + (R-1)                  # number of degrees of freedom used by the model (number of estimated parameters)
     if (S>1) { ret$npar <- ret$npar + (S*(R-1)) - (R-1) }
     ret$aic <- (-2 * ret$llik) + (2 * ret$npar)         # Akaike Information Criterion
@@ -159,7 +163,7 @@ function(formula,data,nclass=2,maxiter=1000,graphs=FALSE,tol=1e-10,na.rm=TRUE,pr
     if (all(rowSums(y==0)>0)) { # if no rows are fully observed
         ret$Chisq <- NA
         ret$Gsq <- NA
-        ret$predcell <- NULL
+        ret$predcell <- NA
     } else {
         compy <- poLCA.compress(y[(rowSums(y==0)==0),])
         datacell <- compy$datamat
@@ -184,6 +188,7 @@ function(formula,data,nclass=2,maxiter=1000,graphs=FALSE,tol=1e-10,na.rm=TRUE,pr
     ret$maxiter <- maxiter             # maximum number of iterations specified by user
     ret$resid.df <- min(ret$N,(prod(K.j)-1))-ret$npar # number of residual degrees of freedom
     class(ret) <- "poLCA"
+    if (graphs) plot.poLCA(ret)
     if (verbose) print.poLCA(ret)
     ret$time <- Sys.time()-starttime   # how long it took to run the model
     }

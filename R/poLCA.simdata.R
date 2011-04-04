@@ -1,8 +1,8 @@
 poLCA.simdata <-
-function(N=5000,probs=NULL,nclass=2,ndv=4,nresp=NULL,x=NULL,niv=0,b=NULL,classdist=NULL,missval=FALSE,pctmiss=NULL) {
+function(N=5000,probs=NULL,nclass=2,ndv=4,nresp=NULL,x=NULL,niv=0,b=NULL,P=NULL,missval=FALSE,pctmiss=NULL) {
     if (is.null(probs)) {
         if (is.null(nresp)) { nresp <- ceiling(runif(ndv,min=1,max=5)) }
-        if (!is.null(classdist))  { nclass <- length(classdist) }
+        if (!is.null(P))  { nclass <- length(P) }
         if (!is.null(b)) { nclass <- ncol(b)+1 }
         ndv <- length(nresp)
         probs <- list()
@@ -18,7 +18,7 @@ function(N=5000,probs=NULL,nclass=2,ndv=4,nresp=NULL,x=NULL,niv=0,b=NULL,classdi
     if (nclass==1) { 
         niv <- 0
         b <- NULL
-        classdist <- 1
+        P <- 1
         group <- matrix(1,nrow=N,ncol=1)
     } else {
         if (!is.null(x)) {
@@ -39,18 +39,18 @@ function(N=5000,probs=NULL,nclass=2,ndv=4,nresp=NULL,x=NULL,niv=0,b=NULL,classdi
             if (is.null(b)) { b <- matrix(round(runif(((nclass-1)*(niv+1)),min=-2,max=2)),nrow=(niv+1)) }
             prior <- poLCA.updatePrior(c(b),cbind(1,x),nclass)
         } else {
-            if (nrow(probs[[1]]) != length(classdist)) {
-                classdist <- runif(nclass)
-                classdist <- classdist/sum(classdist)
+            if (nrow(probs[[1]]) != length(P)) {
+                P <- runif(nclass)
+                P <- P/sum(P)
             }
-            prior <- matrix(classdist,byrow=TRUE,nrow=N,ncol=nclass)
+            prior <- matrix(P,byrow=TRUE,nrow=N,ncol=nclass)
         }
         group <- rmulti(prior)
     }
     y <- rmulti(probs[[1]][group,])
     for (j in 2:ndv) { y <- cbind(y,rmulti(probs[[j]][group,])) }
     colnames(y) <- paste("Y",c(1:ndv),sep="")
-    if (niv > 0) { classdist <- colMeans(poLCA.postClass.C(prior,poLCA.vectorize(probs),y)) }
+    if (niv > 0) { P <- colMeans(poLCA.postClass.C(prior,poLCA.vectorize(probs),y)) }
     if (missval) {
         if (is.null(pctmiss)) pctmiss <- runif(1,min=0.05,max=0.4)
         make.na <- cbind(ceiling(runif(round(pctmiss*N*ndv),min=0,max=N)),ceiling(runif(round(pctmiss*N*ndv),min=0,max=ndv)))
@@ -66,7 +66,7 @@ function(N=5000,probs=NULL,nclass=2,ndv=4,nresp=NULL,x=NULL,niv=0,b=NULL,classdi
     ret$probs <- probs
     ret$nresp <- nresp
     ret$b <- b
-    ret$classdist <- classdist
+    ret$P <- P
     ret$pctmiss <- pctmiss
     return(ret)
 }

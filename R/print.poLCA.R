@@ -1,7 +1,7 @@
 print.poLCA <-
 function(x, ...) {
     R <- length(x$P)
-    S <- ifelse(is.null(x$coeff),1,nrow(x$coeff))
+    S <- ifelse(is.na(x$coeff[1]),1,nrow(x$coeff))
     cat("Conditional item response (column) probabilities,\n by outcome variable, for each class (row) \n \n")
     print(lapply(x$probs,round,4))
     cat("Estimated class population shares \n", round(x$P,4), "\n \n")
