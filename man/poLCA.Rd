@@ -66,6 +66,8 @@ Bandeen-Roche, Karen, Diana L. Miglioretti, Scott L. Zeger, and Paul J. Rathouz.
  
 Hagenaars, Jacques A. and Allan L. McCutcheon, eds. 2002. \emph{Applied Latent Class Analysis}. Cambridge: Cambridge University Press.
  
+Linzer, Drew A. and Jeffrey B. Lewis. 2011. "poLCA: An R Package for Polytomous Variable Latent Class Analysis." \emph{Journal of Statistical Software}. 42(10): 1-29.  \url{http://www.jstatsoft.org/v42/i10}
+
 McLachlan, Geoffrey J. and Thriyambakam Krishnan. 1997. \emph{The EM Algorithm and Extensions}. New York: John Wiley \& Sons.
 }
 \note{
