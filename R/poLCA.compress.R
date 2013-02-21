@@ -18,4 +18,3 @@ function(y) {
     ret <- list(datamat=datamat,freq=freq)
     return(ret)
 }
-

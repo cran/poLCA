@@ -57,7 +57,7 @@ Model specification: Latent class models have more than one manifest variable, s
 \item{eflag}{Logical, error flag. \code{TRUE} if estimation algorithm needed to automatically restart with new initial parameters. A restart is caused in the event of computational/rounding errors that result in nonsensical parameter estimates.}
 \item{probs.start}{A list of matrices containing the class-conditional response probabilities used as starting values in the estimation algorithm. If the algorithm needed to restart (see \code{eflag}), then this contains the starting values used for the final, successful, run.}
 \item{probs.start.ok}{Logical. \code{FALSE} if \code{probs.start} was incorrectly specified by the user, otherwise \code{TRUE}.}
-
+\item{call}{function call to \code{poLCA}.}
 }
 \references{
 Agresti, Alan. 2002. \emph{Categorical Data Analysis, second edition}. Hoboken: John Wiley \& Sons.
@@ -66,8 +66,6 @@ Bandeen-Roche, Karen, Diana L. Miglioretti, Scott L. Zeger, and Paul J. Rathouz.
  
 Hagenaars, Jacques A. and Allan L. McCutcheon, eds. 2002. \emph{Applied Latent Class Analysis}. Cambridge: Cambridge University Press.
  
-Linzer, Drew A. and Jeffrey B. Lewis. 2011. "poLCA: An R Package for Polytomous Variable Latent Class Analysis." \emph{Journal of Statistical Software}. 42(10): 1-29.  \url{http://www.jstatsoft.org/v42/i10}
-
 McLachlan, Geoffrey J. and Thriyambakam Krishnan. 1997. \emph{The EM Algorithm and Extensions}. New York: John Wiley \& Sons.
 }
 \note{

@@ -14,4 +14,3 @@ function(rgivy,prior,x) {
             )
     return(list(grad=ret$grad,hess=-matrix(ret$hess,ncol=((classes-1)*numx),byrow=TRUE)))
 }
-

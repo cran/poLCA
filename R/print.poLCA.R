@@ -38,4 +38,3 @@ function(x, ...) {
     flush.console()
     invisible(x)
 }
-

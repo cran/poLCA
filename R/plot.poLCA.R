@@ -12,4 +12,3 @@ function(x, ...) {
     }
     par(mfrow=c(1,1),mar=c(5,4,4,2)+0.1)
 }
-

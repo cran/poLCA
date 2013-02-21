@@ -7,4 +7,3 @@ function(p) {
     vals <- matrix(runif(n),ncol=ncol(thresh),nrow=n)
     return(rowSums(vals>thresh)+1)
 }
-

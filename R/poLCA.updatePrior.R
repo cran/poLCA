@@ -5,4 +5,3 @@ function(b,x,R) {
     p <- cbind(1,exb)/(rowSums(exb)+1)
     return(p)
 }
-

@@ -79,4 +79,3 @@ function(y,x,probs,prior,rgivy) {
     }
     return( list(probs=se.probs,P=se.mix,b=se.beta,var.b=VCE.beta) )
 }
-

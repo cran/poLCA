@@ -11,4 +11,3 @@ function(rgivy,y,vp) {
             )
     return(ret$ph)
 }
-

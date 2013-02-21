@@ -9,13 +9,13 @@
 ## Department of Political Science
 ## jblewis@polisci.ucla.edu
 ##
-## April 4, 2011
+## February 21, 2013
 ##
 ## poLCA: Polytomous variable Latent Class Analysis
 ##
 ## Commands to produce examples in user's manual, located at
 ##
-##      http://userwww.service.emory.edu/~dlinzer/poLCA
+##      https://github.com/dlinzer/poLCA
 ##
 
 library(poLCA)

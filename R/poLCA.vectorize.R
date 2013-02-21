@@ -5,4 +5,3 @@ function(probs) {
     numChoices <- sapply(probs,ncol)
     return(list(vecprobs=vecprobs,numChoices=numChoices,classes=classes))
 }
-

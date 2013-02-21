@@ -70,4 +70,3 @@ function(N=5000,probs=NULL,nclass=2,ndv=4,nresp=NULL,x=NULL,niv=0,b=NULL,P=NULL,
     ret$pctmiss <- pctmiss
     return(ret)
 }
-

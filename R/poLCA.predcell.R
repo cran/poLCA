@@ -22,4 +22,3 @@ function(lc,y) {
         return(ret)
     }
 }
-

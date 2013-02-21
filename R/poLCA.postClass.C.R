@@ -13,4 +13,3 @@ function(prior,vp,y) {
     ret$posterior <- matrix(ret$posterior,ncol=vp$classes,byrow=TRUE)
     return(ret$posterior)
 }
-

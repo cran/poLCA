@@ -39,4 +39,3 @@ function(lc,y,x=NULL) {
         return(ret)
     }
 }
-

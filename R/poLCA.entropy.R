@@ -5,4 +5,3 @@ function(lc) {
     P.c <- poLCA.predcell(lc,fullcell)
     return(-sum(P.c * log(P.c),na.rm=TRUE))
 }
-

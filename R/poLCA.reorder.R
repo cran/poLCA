@@ -4,4 +4,3 @@ function(probs,o.new) {
     for (j in 1:J) probs[[j]] <- probs[[j]][o.new,]
     return(probs)
 }
-

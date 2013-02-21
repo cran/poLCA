@@ -2,27 +2,28 @@ poLCA <-
 function(formula,data,nclass=2,maxiter=1000,graphs=FALSE,tol=1e-10,
                 na.rm=TRUE,probs.start=NULL,nrep=1,verbose=TRUE,calc.se=TRUE) {
     starttime <- Sys.time()
-    mf <- model.response(model.frame(formula,data,na.action=NULL))
+    mframe <- model.frame(formula,data,na.action=NULL)
+    mf <- model.response(mframe)
     if (any(mf<1,na.rm=TRUE) | any(round(mf) != mf,na.rm=TRUE)) {
-        cat("\n ALERT: some manifest variables contain values that are not 
-  positive integers.  For poLCA to run, please recode categorical  
-  outcome variables to increment from 1 to the maximum number of 
-  outcome categories for each variable. \n \n")
+        cat("\n ALERT: some manifest variables contain values that are not
+    positive integers. For poLCA to run, please recode categorical
+    outcome variables to increment from 1 to the maximum number of
+    outcome categories for each variable. \n\n")
         ret <- NULL
     } else {
-    if (!na.rm) {
+    data <- data[rowSums(is.na(model.matrix(formula,mframe)))==0,]
+    if (na.rm) {
+        mframe <- model.frame(formula,data)
+        y <- model.response(mframe)
+    } else {
         mframe <- model.frame(formula,data,na.action=NULL)
         y <- model.response(mframe)
-        x <- model.matrix(formula,mframe)
         y[is.na(y)] <- 0
-        data <- data.frame(y,x) 
     }
-    mframe <- model.frame(formula,data)
-    y <- model.response(mframe)
     if (any(sapply(lapply(as.data.frame(y),table),length)==1)) {
         y <- y[,!(sapply(apply(y,2,table),length)==1)]
         cat("\n ALERT: at least one manifest variable contained only one
-  outcome category, and has been removed from the analysis. \n \n")
+    outcome category, and has been removed from the analysis. \n\n")
     }
     x <- model.matrix(formula,mframe)
     N <- nrow(y)
@@ -180,10 +181,18 @@ function(formula,data,nclass=2,maxiter=1000,graphs=FALSE,tol=1e-10,
         ret$Gsq <- 2 * sum(freq*log(freq/fit))  # Likelihood ratio/deviance statistic
     }
     y[y==0] <- NA
-    for (j in 1:J) { dimnames(ret$probs[[j]]) <- list(paste("class ",1:R,": ",sep=""),
-                                                  paste("Pr(",1:ncol(ret$probs[[j]]),")",sep="")) }
     ret$y <- data.frame(y)             # outcome variables
     ret$x <- data.frame(x)             # covariates, if specified
+    for (j in 1:J) {
+        rownames(ret$probs[[j]]) <- paste("class ",1:R,": ",sep="")
+        if (is.factor(data[,match(colnames(y),colnames(data))[j]])) {
+            lev <- levels(data[,match(colnames(y),colnames(data))[j]])
+            colnames(ret$probs[[j]]) <- lev
+            ret$y[,j] <- factor(ret$y[,j],labels=lev)
+        } else {
+            colnames(ret$probs[[j]]) <- paste("Pr(",1:ncol(ret$probs[[j]]),")",sep="")
+        }
+    }
     ret$N <- N                         # number of observations
     ret$maxiter <- maxiter             # maximum number of iterations specified by user
     ret$resid.df <- min(ret$N,(prod(K.j)-1))-ret$npar # number of residual degrees of freedom
@@ -192,6 +201,6 @@ function(formula,data,nclass=2,maxiter=1000,graphs=FALSE,tol=1e-10,
     if (verbose) print.poLCA(ret)
     ret$time <- Sys.time()-starttime   # how long it took to run the model
     }
+    ret$call <- match.call()
     return(ret)
 }
-

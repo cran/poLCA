@@ -12,4 +12,3 @@ function(vp,y) {
     ret$lik <- matrix(ret$lik,ncol=vp$classes,byrow=TRUE)
     return(ret$lik)
 }
-
