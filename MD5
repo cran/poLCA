@@ -1,4 +1,4 @@
-d81f81a4db2622c078d7d205538435de *DESCRIPTION
+816fe101255e8edec3c21b25df8d40d4 *DESCRIPTION
 06b007994ffc9860fb7aead2dae86d15 *NAMESPACE
 1f1ddec5c3dbadcf6c92cb57dc39ee5a *R/coef.poLCA.R
 d045c4dfaf04c4be44aebab89f57f00c *R/plot.poLCA.R
@@ -47,4 +47,4 @@ db27396795acc80eba9f9b484b20ae00 *inst/doc/poLCA-manual-example.R
 728de7316cfd126fb501ab79653b2703 *man/rmulti.Rd
 c0c25ab077d03a7ef4439233b4c2e40a *man/values.Rd
 d57954702e4cf772dd3431f2016b452e *src/init_poLCA.c
-3fe3c6c790bcc88b74eabf1dfe7a3f99 *src/poLCA.c
+018a3676db496f8b954bc8768e7a764e *src/poLCA.c
