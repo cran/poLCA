@@ -1,4 +1,4 @@
-816fe101255e8edec3c21b25df8d40d4 *DESCRIPTION
+2be47d66a88a0abcb4e27ad7113ca4c8 *DESCRIPTION
 06b007994ffc9860fb7aead2dae86d15 *NAMESPACE
 1f1ddec5c3dbadcf6c92cb57dc39ee5a *R/coef.poLCA.R
 d045c4dfaf04c4be44aebab89f57f00c *R/plot.poLCA.R
@@ -23,21 +23,21 @@ b1ac35ab702b73e78badb5481f851717 *R/poLCA.updatePrior.R
 42b9a3ea84f49e5bd99e1ef0771a8c88 *R/print.poLCA.R
 4003c15b73e85bab0baf61228b048763 *R/rmulti.R
 fd5d5db8a762e592452275bc5d820cba *R/vcov.poLCA.R
-07c793b03dc07862500a0d4ddf3419c3 *README.md
+fcb2ec7d3ad57d8875e9fc7d1075e8e1 *README.md
 7748d6e1871ac0aa78326bb6f0d584d4 *data/carcinoma.rda
 76ce1c2dccb0a100bdd1c39e406c38a5 *data/cheating.rda
 9c5e879017ef80f4612ec786b8e13078 *data/election.rda
 0e7d37dde2d66cd08133a80783da9347 *data/gss82.rda
 9f7f17c3ad595d88647ca8cdbac39915 *data/values.rda
-ce9e59a72322e7ccc1bdebfb7f0522de *inst/CITATION
+8c861368cf5e02cc0710e1fcc4a9292c *inst/CITATION
 3fb017c234a8d300f19045bbce167824 *inst/doc/index.html
 1e2e30fe4d6b031a8c8ce55c86472e7e *inst/doc/poLCA-manual-1-4.pdf
 db27396795acc80eba9f9b484b20ae00 *inst/doc/poLCA-manual-example.R
-795191603d60bbc8976ff815bbc7e08c *man/carcinoma.Rd
+5a216993449e3bd81b9de25ad9679bb3 *man/carcinoma.Rd
 8376fc43b6162053a4e758d056738638 *man/cheating.Rd
 5ac28efdb025286d065cf6fdeebac09c *man/election.Rd
 1cf01b7c4eed40ad9cc0cf54ce7de792 *man/gss82.Rd
-5600bb1341e71a2335e1935dd0541e00 *man/poLCA.Rd
+8b9d1b7934839433d38ce16746263479 *man/poLCA.Rd
 6c39c0c75df981ffc48823ac40b8668f *man/poLCA.entropy.Rd
 311fc4d8f4d5453c3134a01306b0b89d *man/poLCA.posterior.Rd
 4b246cd1d6e9b14dd6b2b7c6258beb9a *man/poLCA.predcell.Rd
@@ -47,4 +47,4 @@ db27396795acc80eba9f9b484b20ae00 *inst/doc/poLCA-manual-example.R
 728de7316cfd126fb501ab79653b2703 *man/rmulti.Rd
 c0c25ab077d03a7ef4439233b4c2e40a *man/values.Rd
 d57954702e4cf772dd3431f2016b452e *src/init_poLCA.c
-018a3676db496f8b954bc8768e7a764e *src/poLCA.c
+c3349d4dffd256b6e8f5dc467065e40c *src/poLCA.c
